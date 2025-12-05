@@ -176,7 +176,7 @@ class Romeo_Admin {
                             $json_data = htmlspecialchars(json_encode($data_attr), ENT_QUOTES, 'UTF-8');
                             $status_class = 'status-' . esc_attr($r['code']);
                         ?>
-                            <div class="rr-redirect-card <?php echo $status_class; ?>" id="card-<?php echo esc_attr( $r['id'] ); ?>" data-slug="<?php echo esc_attr( strtolower($r['slug']) ); ?>" data-target="<?php echo esc_attr( strtolower($target_display) ); ?>">
+                            <div class="rr-redirect-card <?php echo esc_attr( $status_class ); ?>" id="card-<?php echo esc_attr( $r['id'] ); ?>" data-slug="<?php echo esc_attr( strtolower($r['slug']) ); ?>" data-target="<?php echo esc_attr( strtolower($target_display) ); ?>">
                                 
                                 <div class="rr-card-header">
                                     <div class="rr-slug-title">
@@ -186,7 +186,7 @@ class Romeo_Admin {
                                         <a href="<?php echo esc_url( $full_source ); ?>" target="_blank" class="rr-btn-icon" title="Test Link">
                                             <span class="dashicons dashicons-external"></span>
                                         </a>
-                                        <button onclick="rrEdit(<?php echo $json_data; ?>)" class="rr-btn-icon" title="Edit">
+                                        <button onclick="rrEdit(<?php echo esc_attr( $json_data ); ?>)" class="rr-btn-icon" title="Edit">
                                             <span class="dashicons dashicons-edit"></span>
                                         </button>
                                         <button onclick="rrDelete('<?php echo esc_attr( $r['id'] ); ?>')" class="rr-btn-icon" title="Delete" style="color:var(--rr-danger-text); background:#fff1f2;">
@@ -204,10 +204,10 @@ class Romeo_Admin {
 
                                 <div class="rr-card-footer">
                                     <div class="rr-status-dot">
-                                        <?php echo esc_html( $r['code'] ); ?> Redirect
+                                        <?php echo esc_attr( $r['code'] ); ?> Redirect
                                     </div>
                                     <span class="rr-pill-hits">
-                                        <?php echo isset($r['hits']) ? number_format_i18n( $r['hits'] ) : 0; ?> Hits
+                                        <?php echo isset($r['hits']) ? esc_html( number_format_i18n( $r['hits'] ) ) : 0; ?> Hits
                                     </span>
                                 </div>
 
@@ -227,10 +227,10 @@ class Romeo_Admin {
             wp_send_json_error( 'Permission denied.' );
         }
 
-        $id   = isset( $_POST['id'] ) ? sanitize_text_field( $_POST['id'] ) : ''; // If ID exists, it's an edit
-        $slug = isset( $_POST['slug'] ) ? sanitize_title( $_POST['slug'] ) : '';
-        $type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : 'url';
-        $code = isset( $_POST['code'] ) ? intval( $_POST['code'] ) : 301;
+        $id   = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
+        $slug = isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '';
+        $type = isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : 'url';
+        $code = isset( $_POST['code'] ) ? intval( wp_unslash( $_POST['code'] ) ) : 301;
         
         if ( empty( $slug ) ) {
             wp_send_json_error( 'Slug is required.' );
@@ -238,12 +238,12 @@ class Romeo_Admin {
 
         $target = '';
         if ( 'post' === $type ) {
-            $target = isset( $_POST['target_post_id'] ) ? intval( $_POST['target_post_id'] ) : 0;
+            $target = isset( $_POST['target_post_id'] ) ? intval( wp_unslash( $_POST['target_post_id'] ) ) : 0;
             if ( ! $target ) {
                 wp_send_json_error( 'Please select a post.' );
             }
         } else {
-            $target = isset( $_POST['target_url'] ) ? esc_url_raw( $_POST['target_url'] ) : '';
+            $target = isset( $_POST['target_url'] ) ? esc_url_raw( wp_unslash( $_POST['target_url'] ) ) : '';
             if ( empty( $target ) ) {
                 wp_send_json_error( 'Target URL is required.' );
             }
@@ -305,7 +305,7 @@ class Romeo_Admin {
         check_ajax_referer( 'rr_delete_nonce', 'nonce' );
         if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error();
 
-        $id = isset( $_POST['id'] ) ? sanitize_text_field( $_POST['id'] ) : '';
+        $id = isset( $_POST['id'] ) ? sanitize_text_field( wp_unslash( $_POST['id'] ) ) : '';
         $redirects = get_option( $this->option_key, array() );
 
         foreach ( $redirects as $key => $r ) {
@@ -319,9 +319,14 @@ class Romeo_Admin {
     }
 
     public function ajax_search_posts() {
+        // Verify Nonce
+        if ( ! isset( $_GET['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'rr_save_nonce' ) ) {
+            wp_send_json_error( 'Invalid nonce' );
+        }
+
         if ( ! current_user_can( 'manage_options' ) ) wp_send_json_error();
 
-        $term = isset( $_GET['term'] ) ? sanitize_text_field( $_GET['term'] ) : '';
+        $term = isset( $_GET['term'] ) ? sanitize_text_field( wp_unslash( $_GET['term'] ) ) : '';
         
         $query = new WP_Query( array(
             's' => $term,

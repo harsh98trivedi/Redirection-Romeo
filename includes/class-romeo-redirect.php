@@ -17,56 +17,54 @@ class Romeo_Redirect {
             return;
         }
 
-        // Normalize path: trim slashes
-        $path = trim( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
-
-        // Fetch all redirects
-        // Optimization: In a huge scale, this should be a custom table query. 
-        // For standard WP option usage, this is fine.
-        $redirects = get_option( $this->option_key, array() );
-
-        if ( empty( $redirects ) || ! is_array( $redirects ) ) {
+        // 1. Get current path
+        // Use wp_unslash before processing
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        
+        // Parse URL safely
+        $parsed_url = wp_parse_url( $request_uri );
+        if ( ! $parsed_url || ! isset( $parsed_url['path'] ) ) {
             return;
         }
 
-        foreach ( $redirects as $key => $r ) {
-            // Case insensitive match often desired, but let's stick to exact for speed/strictness unless requested.
-            // Using urldecode to match "my-slug" against "my-slug".
-            if ( urldecode( $path ) === urldecode( $r['slug'] ) ) {
-                
-                $target_url = '';
+        $path = untrailingslashit( $parsed_url['path'] );
+        $path = trim( $path, '/' );
 
+        // 2. Load redirects
+        $redirects = get_option( $this->option_key, array() );
+
+        if ( empty( $redirects ) ) {
+            return;
+        }
+
+        // 3. Match
+        foreach ( $redirects as $key => &$r ) {
+            // Case-insensitive match for slug
+            if ( strtolower( $r['slug'] ) === strtolower( $path ) ) {
+                
+                // Track Hit
+                if ( ! isset( $r['hits'] ) ) {
+                    $r['hits'] = 0;
+                }
+                $r['hits']++;
+                $redirects[$key] = $r; // Ensure array is updated
+                update_option( $this->option_key, $redirects ); // Save hits
+
+                // Resolve Target
+                $target_url = '';
                 if ( 'post' === $r['type'] ) {
-                    $permalink = get_permalink( $r['target'] );
-                    if ( $permalink ) {
-                        $target_url = $permalink;
-                    } else {
-                        return; // Post might be deleted or not found.
-                    }
+                    $target_url = get_permalink( intval( $r['target'] ) );
                 } else {
                     $target_url = $r['target'];
                 }
 
-                // Append query strings if they exist? 
-                // Basic redirect usually keeps them or drops them. Let's strict redirect for now.
-                // If the user wants to pass parameters, we might need to add that logic.
-                // For now, simple redirect.
-
-                // Update Hit Counter
-                // Check if index exists to be safe
-                if( isset($redirects[$key]) ) {
-                    $redirects[$key]['hits'] = isset($r['hits']) ? $r['hits'] + 1 : 1;
-                    update_option( $this->option_key, $redirects );
+                if ( $target_url ) {
+                    // Redirect
+                    // Use wp_redirect as we support external domains.
+                    // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+                    wp_redirect( $target_url, intval( $r['code'] ) );
+                    exit;
                 }
-
-                // Determine Code
-                $code = isset( $r['code'] ) ? intval( $r['code'] ) : 301;
-                if (!in_array($code, [301, 302, 307, 308])) {
-                    $code = 301;
-                }
-
-                wp_redirect( $target_url, $code );
-                exit;
             }
         }
     }

@@ -1,12 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Elements
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // DOM Elements
     const dom = {
         btnNew: document.getElementById('rr-btn-new'),
-        btnCancel: document.getElementById('rr-cancel'),
         panel: document.getElementById('rr-creator-panel'),
+        btnCancel: document.getElementById('rr-cancel'),
         form: document.getElementById('rr-form'),
-        // searchBox: document.getElementById('rr-table-search'), // Removed
-        tableBody: document.getElementById('rr-table-body'),
         targetType: document.getElementById('rr-target-type'),
         groupUrl: document.getElementById('rr-group-url'),
         groupPost: document.getElementById('rr-group-post'),
@@ -41,10 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         dom.targetType.value = 'url';
         dom.targetType.dispatchEvent(new Event('change'));
         
-        
         // Reset Search
-        // dom.searchBox is deprecated (removed table search), so no need to clean it.
-        // If we want to clean the Card search (rr-card-search) we can, but it is not in the 'dom' object yet.
         const cardSearch = document.getElementById('rr-card-search');
         if(cardSearch) cardSearch.value = '';
 
@@ -104,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         searchTimeout = setTimeout(() => {
-            fetch(ajaxurl + '?action=rr_search_posts&term=' + term)
+            fetch(ajaxurl + '?action=rr_search_posts&nonce=' + rr_vars.nonce + '&term=' + term)
             .then(res => res.json())
             .then(data => {
                 dom.searchResults.innerHTML = '';
@@ -211,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.rrEdit = function(data) {
-        console.log('Editing', data);
+        // console.log('Editing', data); // Removed for production
         
         // Open Panel
         dom.panel.classList.remove('hidden');
@@ -231,14 +227,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if(data.type === 'url') {
             dom.form.querySelector('[name="target_url"]').value = data.target;
         } else {
-            // For post, we might need the title. 
-            // In a real app we'd fetch it, but here we can pass it via data attribute or just show ID if lazy.
-            // Let's assume the passed data object has the title relative to the row.
-            
-            // NOTE: The data passed to rrEdit matches the raw redirect array structure.
-            // If the table row knows the title, we can grab it? 
-            // Better: In the PHP loop, I will encode the full object including a 'target_title' if post.
-            
             if (data.target_title) {
                 dom.targetPostId.value = data.target;
                 dom.selectedPost.querySelector('.text').textContent = data.target_title;
