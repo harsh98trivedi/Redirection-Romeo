@@ -1,0 +1,474 @@
+:root {
+    --rr-primary: #f43f5e; /* Rose 500 */
+    --rr-primary-hover: #e11d48; /* Rose 600 */
+    --rr-bg: #f1f5f9; /* Slate 100 */
+    --rr-surface: #ffffff;
+    --rr-text-main: #0f172a; /* Slate 900 */
+    --rr-text-secondary: #64748b; /* Slate 500 */
+    --rr-border: #e2e8f0; /* Slate 200 */
+    --rr-success-bg: #ecfdf5;
+    --rr-success-text: #059669;
+    --rr-danger-bg: #fff1f2;
+    --rr-danger-text: #e11d48;
+    --rr-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --rr-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --rr-radius: 16px;
+}
+
+body {
+    background: var(--rr-bg);
+}
+
+.rr-wrapper {
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    width: 98%;
+    margin: 20px auto;
+    padding: 0;
+    color: var(--rr-text-main);
+}
+
+.rr-wrapper * {
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Header */
+.rr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 0 10px;
+}
+
+.rr-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rr-logo-icon {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rr-logo-icon img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.rr-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--rr-text-main);
+    margin: 0;
+    line-height: 1.1;
+}
+
+.rr-header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Buttons */
+.rr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+}
+
+.rr-btn-primary {
+    background: var(--rr-primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+}
+
+.rr-btn-primary:hover {
+    background: var(--rr-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(244, 63, 94, 0.4);
+}
+
+.rr-btn-secondary {
+    background: white;
+    color: var(--rr-text-main);
+    border: 1px solid var(--rr-border);
+}
+
+.rr-btn-secondary:hover {
+    background: var(--rr-bg);
+    border-color: #cbd5e1;
+}
+
+.rr-btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: none;
+    background: #f1f5f9;
+    color: var(--rr-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.rr-btn-icon:hover {
+    background: white;
+    color: var(--rr-primary);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Creator Panel */
+.rr-creator-wrapper {
+    background: var(--rr-surface);
+    border-radius: var(--rr-radius);
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: var(--rr-shadow);
+    border: 1px solid var(--rr-border);
+    animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.rr-creator-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 24px 0;
+}
+
+.rr-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.rr-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--rr-text-secondary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rr-input, .rr-select {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 16px;
+    border: 1px solid var(--rr-border);
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--rr-text-main);
+    transition: all 0.2s;
+}
+
+.rr-input:focus, .rr-select:focus {
+    background: white;
+    border-color: var(--rr-primary);
+    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1);
+    outline: none;
+}
+
+.rr-input-wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+.rr-input-prefix {
+    background: var(--rr-bg);
+    border: 1px solid var(--rr-border);
+    border-right: none;
+    padding: 14px 18px;
+    border-radius: 10px 0 0 10px;
+    color: var(--rr-text-secondary);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.rr-input-prefix + .rr-input {
+    border-radius: 0 10px 10px 0;
+}
+
+/* Search Bar - Ultra Modern */
+.rr-toolbar-modern {
+    margin-bottom: 40px;
+    position: relative;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 10;
+}
+
+.rr-search-modern-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.rr-search-modern-wrapper .dashicons {
+    position: absolute;
+    left: 24px;
+    z-index: 20;
+    color: var(--rr-text-secondary); /* Softer icon color */
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    line-height: 1;
+}
+
+/* Specificity Boost for Input */
+input[type="text"].rr-search-modern {
+    width: 100%;
+    height: 64px !important; /* Taller, more premium */
+    padding: 0 30px 0 64px !important; /* Forced padding to clear icon */
+    border: 1px solid transparent !important;
+    border-radius: 99px !important; /* Forced Pill Shape */
+    font-size: 17px !important;
+    background: white !important;
+    color: var(--rr-text-main);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.02) !important;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    line-height: normal !important;
+}
+
+input[type="text"].rr-search-modern:focus {
+    outline: none !important;
+    border-color: rgba(244, 63, 94, 0.2) !important;
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.04) !important;
+    transform: translateY(-2px);
+}
+
+input[type="text"].rr-search-modern::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+    opacity: 1;
+}
+
+/* Card Grid Layout - Modern */
+.rr-grid-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); /* Slightly wider cards */
+    gap: 24px;
+}
+
+.rr-redirect-card {
+    background: white;
+    border-radius: 20px;
+    border: none; /* Removed transparent border to prevent outline appearance */
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02); /* Very subtle default shadow */
+    overflow: hidden;
+}
+
+.rr-redirect-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--rr-border); /* Default status line */
+    opacity: 0.5;
+    transition: background 0.3s;
+}
+
+/* Status Line Colors based on classes added via JS or parent context? 
+   Actually, we can target via the child presence if we restructure, 
+   but for now let's just use a top accent or keep it clean. 
+   Let's use a subtle gradient background on hover instead. 
+*/
+
+.rr-redirect-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: rgba(244, 63, 94, 0.1); /* Primary color hint */
+}
+
+.rr-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center align items */
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.rr-slug-title {
+    font-family: 'Outfit', sans-serif; /* Ensure headings use the display font */
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--rr-text-main);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.rr-slug-title span { 
+    color: var(--rr-primary); 
+    font-weight: 500; 
+    opacity: 0.7;
+}
+
+.rr-card-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0; /* Hidden by default */
+    transform: translateX(10px);
+    transition: all 0.2s ease;
+}
+.rr-redirect-card:hover .rr-card-actions { 
+    opacity: 1; 
+    transform: translateX(0);
+}
+
+.rr-card-body {
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.rr-target-display {
+    background: #f8fafc;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--rr-text-secondary);
+    display: flex;
+    flex-direction: column; /* Stack label and value */
+    gap: 6px;
+}
+
+.rr-target-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+.rr-target-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Inter', sans-serif; /* readable font */
+    font-size: 14px;
+    color: var(--rr-text-main);
+    font-weight: 500;
+}
+
+.rr-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto; /* Push to bottom */
+}
+
+/* Modern Pills */
+.rr-status-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--rr-text-secondary);
+}
+.rr-status-dot::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-301 .rr-status-dot::before { background: #2563eb; box-shadow: 0 0 0 2px #dbeafe; } /* Blue */
+.status-302 .rr-status-dot::before { background: #d97706; box-shadow: 0 0 0 2px #fef3c7; } /* Amber */
+.status-307 .rr-status-dot::before { background: #7c3aed; box-shadow: 0 0 0 2px #ede9fe; } /* Violet */
+.status-308 .rr-status-dot::before { background: #db2777; box-shadow: 0 0 0 2px #fce7f3; } /* Pink */
+
+.rr-pill-hits {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* Empty State */
+.rr-empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px;
+    background: white;
+    border-radius: 24px;
+    color: var(--rr-text-secondary);
+}
+
+/* Autocomplete (kept same but cleaner) */
+.rr-autocomplete-results {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid var(--rr-border);
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.rr-result-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f5f9;
+}
+.rr-result-item:hover { background: #fff0f5; color: var(--rr-primary); }
+
+.rr-post-selected {
+    padding: 12px;
+    background: var(--rr-success-bg);
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--rr-success-text);
+    font-weight: 600;
+}
