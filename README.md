@@ -26,8 +26,14 @@
 
 ## 📦 Installation
 
+### 📥 Download
+
+[![Download](https://img.shields.io/badge/Download-v1.0.0-brightgreen.svg)](https://github.com/harsh98trivedi/Redirection-Romeo/releases/download/1.0.0/redirection-romeo.zip)
+
+👉 [**Click here to Download**](https://github.com/harsh98trivedi/Redirection-Romeo/releases/download/1.0.0/redirection-romeo.zip)
+
 ### From WordPress Admin
-1. Download the latest release `.zip` file
+1. Download the latest release `.zip` file from the link above
 2. Go to **Plugins → Add New → Upload Plugin**
 3. Upload the zip file and click **Install Now**
 4. Activate the plugin
@@ -95,10 +101,6 @@ Distributed under the **GPL-2.0+** License. See [`LICENSE`](LICENSE) for more in
 
 ---
 
-## 👨‍💻 Author
-
-**Made with ❤️ by [Harsh Trivedi](https://harsh98trivedi.github.io/)**
-
 For questions, feature requests, or customizations:
 - 🐛 [Open an Issue](https://github.com/harsh98trivedi/Redirection-Romeo/issues)
 - 🔗 [Contact Me](https://harsh98trivedi.github.io/links)
@@ -111,3 +113,8 @@ If you find this plugin helpful, please consider:
 - ⭐ Starring this repository
 - 📣 Sharing it with others
 - 🐛 Reporting bugs or suggesting features
+
+
+## 👨‍💻 Author
+
+**Made with ❤️ by [Harsh Trivedi](https://harsh98trivedi.github.io/)**
